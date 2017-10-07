@@ -1,4 +1,4 @@
-package com.acme.chat;
+package server;
 
 import java.io.*;
 import java.net.ServerSocket;
