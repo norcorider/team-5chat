@@ -2,6 +2,8 @@ package client;
 
 import java.io.*;
 import java.net.Socket;
+import java.sql.Time;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -20,9 +22,10 @@ public class Main {
                     e.printStackTrace();
                 }
             }).start();
-
             while (true) {
-                out.println(in.nextLine());
+                String message = in.nextLine();
+                if((message.length() >= 5) && (message.substring(0,5).equals("/snd ")))
+                    out.println((new Date()) + ": " + message.substring(5));
             }
 
         } catch (IOException e) {
