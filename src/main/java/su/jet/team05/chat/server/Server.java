@@ -46,12 +46,14 @@ public class Server {
     }
 
     private static void sendToAll(String currentMessage) throws IOException {
-        for (int i=0; i < clients.length; i++) {
+        for (int i = 0; i < clients.size(); i++) {
             try {
-                PrintWriter pw = new PrintWriter(current.getOutputStream(), true);
+                PrintWriter pw = new PrintWriter(clients.get(i).getOutputStream(), true);
                 pw.println(currentMessage);
             } catch (IOException e) {
-                i++;
+                System.out.println("Message "+ currentMessage+" wasn't sent to "+ clients.get(i));
+
             }
+        }
     }
 }
