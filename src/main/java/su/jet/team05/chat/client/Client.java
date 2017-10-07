@@ -1,8 +1,7 @@
-package client;
+package su.jet.team05.chat.client;
 
 import java.io.*;
 import java.net.Socket;
-import java.sql.Time;
 import java.util.Date;
 import java.util.Scanner;
 

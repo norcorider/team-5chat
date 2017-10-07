@@ -1,10 +1,9 @@
-package server;
+package su.jet.team05.chat.server;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -20,7 +19,7 @@ public class Server {
         try (ServerSocket server = new ServerSocket(PORT)) {
             while (true) {
                 Socket client = server.accept();
-                // save client to our client collection
+                // save su.jet.team05.chat.client to our su.jet.team05.chat.client collection
                 clients.add(client);
                 new Thread(() -> clientLoop(client)).start();
 
