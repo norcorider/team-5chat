@@ -1,5 +1,7 @@
 package su.jet.team05.chat.client;
 
+import su.jet.team05.chat.exception.messageException;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
@@ -15,7 +17,7 @@ public class Client {
             PrintWriter out = new PrintWriter(client.getOutputStream(), true);
             BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
             Scanner in = new Scanner(System.in);
-            new Thread(() -> {
+            Thread t = new Thread(() -> {
                 try {
                     while (true) {
                         System.out.println(reader.readLine());
@@ -23,18 +25,18 @@ public class Client {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }).start();
-            while (true) {
-                String message = in.nextLine();
-                if(message.length() > 155)
-                {
-                    System.out.println("Too large lenght");
-                } else if((message.length() >= 5) && (message.substring(0,5).equals("/snd ")))
-                    out.println((new Date()) + ": " + message.substring(5));
-                else {
-                    System.out.println("Incorrect command");
+            });
+            t.setDaemon(true);
+            t.start();
+            int state = 0;
+            do {
+                try {
+                    state = Message.parseMessage(in.nextLine(), out);
+                } catch (messageException e) {
+                    state = -1;
+                    System.out.println(e.getMessage());
                 }
-            }
+            } while (state != 0);
 
         } catch (IOException e) {
             e.printStackTrace();
