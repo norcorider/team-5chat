@@ -6,7 +6,7 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Main {
+public class Client {
     private static final String IP = "localhost";
     private static final int PORT = 60000;
 
