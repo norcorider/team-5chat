@@ -34,8 +34,8 @@ public class Message {
                 if (getParameter(message).length() > MAX_NICK_LENGTH) {
                     throw new messageException("Длина имени пользователя превышена");
                 } else {
-                    if (message.length() > SEND_COMMAND.length() + 1) {
-                        out.println("2" + message.substring(SEND_COMMAND.length() + 1));
+                    if (message.length() > SET_NICK_COMMAND.length() + 1) {
+                        out.println("2" + message.substring(SET_NICK_COMMAND.length() + 1));
                     } else {
                         throw new messageException("Имя пользователя не введено");
                     }
