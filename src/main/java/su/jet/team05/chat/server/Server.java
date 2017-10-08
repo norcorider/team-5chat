@@ -4,14 +4,12 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Server {
     private static final int PORT = 60000;
 
-    private static List<Socket> clients = new LinkedList<>();
+    private static Set<Socket> clients = new HashSet<>();
 
 
     public static void main(String[] args) {
@@ -46,13 +44,19 @@ public class Server {
     }
 
     private static void sendToAll(String currentMessage) throws IOException {
-        for (int i = 0; i < clients.size(); i++) {
+        HashSet<Socket> clientsToDelete = new HashSet<>();
+        for (Socket current: clients ) {
             try {
-                PrintWriter pw = new PrintWriter(clients.get(i).getOutputStream(), true);
+                PrintWriter pw = new PrintWriter(current.getOutputStream(), true);
                 pw.println(currentMessage);
             } catch (IOException e) {
-                System.out.println("Message "+ currentMessage+" wasn't sent to "+ clients.get(i));
-
+                System.out.println("Message "+ currentMessage+" wasn't sent to "+ current+ " . This client will be deleted ");
+                clientsToDelete.add(current);
+            }
+        }
+        for( Socket toDelete : clientsToDelete){
+            if( clients.contains(toDelete)){
+                clients.remove(toDelete);
             }
         }
     }
