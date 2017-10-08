@@ -46,11 +46,11 @@ public class Server {
     private static void sendToAll(String currentMessage) throws IOException {
         HashSet<Socket> clientsToDelete = new HashSet<>();
         for (Socket current: clients ) {
-            try {
+            if (!current.isClosed()) {
                 PrintWriter pw = new PrintWriter(current.getOutputStream(), true);
                 pw.println(currentMessage);
-            } catch (IOException e) {
-                System.out.println("Message "+ currentMessage+" wasn't sent to "+ current+ " . This client will be deleted ");
+            } else {
+                System.out.println("Message " + currentMessage + " wasn't sent to " + current + " . This client will be deleted ");
                 clientsToDelete.add(current);
             }
         }
