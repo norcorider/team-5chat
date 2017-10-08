@@ -21,8 +21,8 @@ public class Message {
                 if (getParameter(message).length() > MAX_MESSAGE_LENGTH) {
                     throw new messageException("Длина сообщения превышена, максимум 150 символов");
                 } else {
-                    if (message.length() > SEND_COMMAND.length() + 1) {
-                        out.println("0" + message.substring(SEND_COMMAND.length() + 1));
+                    if (!getParameter(message).equals("")) {
+                        out.println("0" + getParameter(message));
                     } else {
                         throw new messageException("Пустое сообщение");
                     }
@@ -35,8 +35,8 @@ public class Message {
                 if (getParameter(message).length() > MAX_NICK_LENGTH) {
                     throw new messageException("Длина имени пользователя превышена");
                 } else {
-                    if (message.length() > SET_NICK_COMMAND.length() + 1) {
-                        out.println("2" + message.substring(SET_NICK_COMMAND.length() + 1));
+                    if (!getParameter(message).equals("")) {
+                        out.println("2" + getParameter(message));
                     } else {
                         throw new messageException("Имя пользователя не введено");
                     }
@@ -55,7 +55,7 @@ public class Message {
     }
 
     private static String getParameter(String message) {
-        return message.indexOf(' ') == -1 ? "" : message.substring(message.indexOf(' '));
+        return message.indexOf(' ') == -1 ? "" : message.substring(message.indexOf(' ') + 1);
     }
 
     private static boolean isCommand(String message) {
