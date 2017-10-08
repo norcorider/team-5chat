@@ -18,7 +18,7 @@ public class Server {
     private static Set<String> usedUserNames = new HashSet<>();
 
     public static void main(String[] args) {
-        try (ServerSocket server = new ServerSocket(PORT)) {
+        try (ServerSocket server = new ServerSocket(PORT, 1000)) {
             while (true) {
                 Socket client = server.accept();
                 Client currentClient = new Client(client);
@@ -51,7 +51,7 @@ public class Server {
         if (inputStringMessage.length() < 2 && inputStringMessage.length() > 0) {
             // if client ask to exit
             if (inputStringMessage.charAt(0) == '1') {
-                System.out.print("Client " + client.getSocket() + " will be deleted");
+                System.out.print("Клиент " + client.getSocket() + " будет удален");
                 clients.remove(client);
                 if (usedUserNames.contains(client.getUsername())) {
                     usedUserNames.remove(client.getUsername());
@@ -84,9 +84,9 @@ public class Server {
         // if this user name is already busy
         if (usedUserNames.contains(userNick)) {
             PrintWriter pw = new PrintWriter(client.getSocket().getOutputStream(), true);
-             pw.println("The user name " + userNick + " is busy. Enter other username");
+             pw.println("Имя пользователя " + userNick + " занято.Введите новое");
         } else {
-            sendToAll("User "+ client.getUsername()+" renamed to "+ userNick);
+            sendToAll("Пользователь "+ client.getUsername()+" переименован в "+ userNick);
             usedUserNames.remove(client.getUsername());
             client.setUsername(userNick);
             usedUserNames.add(userNick);
@@ -103,7 +103,7 @@ public class Server {
                 PrintWriter pw = new PrintWriter(currentSocket.getOutputStream(), true);
                 pw.println(currentMessage);
             } else {
-                System.out.println("Message " + currentMessage + " wasn't sent to " + current.getUsername() + " . This client will be deleted ");
+                System.out.println("Сообщение " + currentMessage + " не было отправлено " + current.getUsername() + " . Этот клиент не в сетии ");
                 clientsToDelete.add(current);
                 usedUserNames.remove(current.getUsername());
             }
