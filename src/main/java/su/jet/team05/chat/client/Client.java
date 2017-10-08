@@ -3,7 +3,6 @@ package su.jet.team05.chat.client;
 import su.jet.team05.chat.exception.messageException;
 
 import java.io.*;
-import java.net.ConnectException;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Scanner;
@@ -14,9 +13,12 @@ public class Client {
     private static final String IP = "localhost";
     private static final int PORT = 60000;
 
+    public Client() {
+    }
+
     public static void main(String[] args) {
         try {
-            ClientWork();
+            clientWork();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,7 +26,7 @@ public class Client {
 
     private static PrintWriter setClientWriter(Socket client) {
         try {
-            return (new PrintWriter(client.getOutputStream(), true));
+            return new PrintWriter(client.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -33,14 +35,14 @@ public class Client {
 
     private static BufferedReader setClientReader(Socket client) {
         try {
-            return (new BufferedReader(new InputStreamReader(client.getInputStream())));
+            return new BufferedReader(new InputStreamReader(client.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private static void ClientWork() throws IOException {
+    private static void clientWork() throws IOException {
         Socket client = null;
         client = clientRecconect(client);
 
@@ -76,9 +78,14 @@ public class Client {
         while (client == null || !client.isConnected()) {
             try {
                 client = new Socket(IP, PORT);
-                System.out.println("Успешное подключение к серверу!");
+                System.out.println("Connection to server successfull!");
+                System.out.println("Use commands:");
+                System.out.println("Send message: /snd");
+                System.out.println("View history: /hist");
+                System.out.println("Change User nick Name: /chid <NickName>");
+                System.out.println("Exit program: /exit");
             } catch (SocketException s) {
-                System.out.println("Нет соединения с сервером");
+                System.out.println("Server temporarily unavailable!");
             }
 
             try {
