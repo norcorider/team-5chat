@@ -5,6 +5,7 @@ package su.jet.team05.chat.server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 public class Server {
@@ -25,7 +26,10 @@ public class Server {
                 new Thread(() -> clientLoop(currentClient)).start();
 
             }
-        } catch (IOException e) {
+        } catch (SocketException t) {
+            System.out.println("Пользователь отключен.");
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -46,6 +50,8 @@ public class Server {
             } while (inputStringMessage != null);
 
 
+        }catch (SocketException t) {
+            System.out.println("Пользователь отключен.");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,8 +67,8 @@ public class Server {
             } else {
 
                 if (code == '3') {
-                    // здесь будет выведена история
-                    Saver.getHistory();
+                    PrintWriter pw2 = new PrintWriter(client.getSocket().getOutputStream(), true);
+                    pw2.println(Saver.getHistory());
                 }
             }
         } else if (inputStringMessage.length() > 1) {
@@ -76,6 +82,8 @@ public class Server {
 
             } else if (code == '4') {// если пришел номре команты
                 String nameRoom = inputStringMessage.substring(1);
+                PrintWriter pw = new PrintWriter(client.socket.getOutputStream(), true);
+                pw.println("Вы перешли в комнату " + nameRoom);
                 client.setRoom(nameRoom);
             }else {
                 // невалидный код

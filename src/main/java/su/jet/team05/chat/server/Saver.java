@@ -22,9 +22,6 @@ public class Saver {
          * Сохраняем сообщения в файле history.txt в виде объектов типа Message.
          */
         try {
-//            out = new ObjectOutputStream(
-//                        new BufferedOutputStream(
-//                            new FileOutputStream(HISTORY_PATH, true)));
             Saver.out2 = new BufferedWriter(new FileWriter(HISTORY_PATH, true));
         } catch (FileNotFoundException f) {
             System.out.println("Не удалось открыть файл для сохранения истории. История сохранена не будет.");
