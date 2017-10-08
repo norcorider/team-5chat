@@ -53,41 +53,49 @@ public class Server {
             if (inputStringMessage.charAt(0) == '1') {
                 System.out.print("Client " + client.getSocket() + " will be deleted");
                 clients.remove(client);
-                if(userNames.containsKey(client.getUsername())){
+                if (userNames.containsKey(client.getUsername())) {
                     userNames.remove(client.getUsername());
                 }
                 // нужно как-то осободить ник клиента
                 //userNames.remove(client);
-            }
-        } else if (inputStringMessage.length() > 1) {
-            char code = inputStringMessage.charAt(0);
-            // если пришло обычное сообщение
-            if (code == '0') {
-
-                String messageToSend = inputStringMessage.substring(1);
-                Message currentMessage = new Message( client.getUsername(),messageToSend);
-                sendToAll(currentMessage.toString());
-            } else if (code == '2') {//если настроить username
-                String userNick = inputStringMessage.substring(1);
-                // if this user name is stored
-                if (userNames.containsKey(userNick)) {
-                    // if it's not the same socket, send to this client that username is invalid
-                    if (!(userNames.get(userNick) == client)) {
-                        PrintWriter pw = new PrintWriter(client.getSocket().getOutputStream(), true);
-                        pw.println("The user name " + userNick + " is busy. Enter other username");
-                    }
-                } else {
-                    client.setUsername(userNick);
-                    userNames.put(userNick, client);
-
-                }
-            } else if (code == '3') {
+            } else if (inputStringMessage.charAt(0) == '3') {
                 // здесь будет выведена история
-            } else {
-                // невалидный код
+                Socket currentSoket = client.getSocket();
+                PrintWriter pw2 = new PrintWriter(currentSoket.getOutputStream(), true);
+                for (Message oldMessage : history) {
+                    pw2.println(oldMessage);
+                }
             }
         }
-    }
+            else if (inputStringMessage.length() > 1) {
+                char code = inputStringMessage.charAt(0);
+                // если пришло обычное сообщение
+                if (code == '0') {
+
+                    String messageToSend = inputStringMessage.substring(1);
+                    Message currentMessage = new Message(client.getUsername(), messageToSend);
+                    history.add(currentMessage);
+                    sendToAll(currentMessage.toString());
+                } else if (code == '2') {//если настроить username
+                    String userNick = inputStringMessage.substring(1);
+                    // if this user name is stored
+                    if (userNames.containsKey(userNick)) {
+                        // if it's not the same socket, send to this client that username is invalid
+                        if (!(userNames.get(userNick) == client)) {
+                            PrintWriter pw = new PrintWriter(client.getSocket().getOutputStream(), true);
+                            pw.println("The user name " + userNick + " is busy. Enter other username");
+                        }
+                    } else {
+                        client.setUsername(userNick);
+                        userNames.put(userNick, client);
+
+                    }
+                } else {
+                    // невалидный код
+                }
+            }
+        }
+
 
     private static void sendToAll(String currentMessage) throws IOException {
         HashSet<Client> clientsToDelete = new HashSet<>();
