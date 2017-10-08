@@ -4,7 +4,7 @@ package su.jet.team05.chat.server;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Message{ //implements Comparable<Message>{
+public class Message implements Comparable<Message>{
 
     private SimpleDateFormat dateMessage;
     private String userName;
@@ -33,17 +33,17 @@ public class Message{ //implements Comparable<Message>{
 
     }
 
-   /* @Override
+   @Override
     public int compareTo(Message o) {
         int  b;
-        if (this.dateMessage > o.dateMessage)
+        if (this.dateMessage.get2DigitYearStart().getTime() > o.dateMessage.get2DigitYearStart().getTime())
             b = 1;
             if(this.dateMessage == o.dateMessage)
             b = -1;
         else b = 0;
         return b;
 
-    }*/
+    }
 
 }
 
