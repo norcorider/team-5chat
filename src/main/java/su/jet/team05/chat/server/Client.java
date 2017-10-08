@@ -5,6 +5,7 @@ import java.net.Socket;
 public class Client {
     Socket socket;
     String username;
+    String room = "common";
     private static int counterId =0;
 
     public Client(Socket socket, String username) {
@@ -26,8 +27,15 @@ public class Client {
         return username;
     }
 
+    public String getRoom() { return room; }
+
     public void setUsername(String username) {
 
         this.username = username;
+    }
+
+    public void setRoom(String room) {
+
+        this.room = room;
     }
 }

@@ -12,6 +12,7 @@ public class Message {
     private static final String EXIT_COMMAND = "/exit";
     private static final String SET_NICK_COMMAND = "/chid";
     private static final String GET_HISTORY_COMMAND = "/hist";
+    private static final String CHOOSE_ROOM = "/chroom";
 
     public static int parseMessage(String message, PrintWriter out) throws messageException {
         if (!isCommand(message)) throw new messageException("Неправильный ввод");
@@ -43,6 +44,9 @@ public class Message {
                 return 1;
             case GET_HISTORY_COMMAND:
                 out.println("3");
+                return 1;
+            case CHOOSE_ROOM:
+                out.println("4");
                 return 1;
 
             default:

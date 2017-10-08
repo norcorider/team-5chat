@@ -1,7 +1,6 @@
 package su.jet.team05.chat.server;
 
 
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -47,7 +46,7 @@ public class Server {
     }
 
     private static void parseAndSend(Client client, String inputStringMessage) throws IOException {
-       // if input is command to exit or show history
+        // if input is command to exit or show history
         if (inputStringMessage.length() < 2 && inputStringMessage.length() > 0) {
             // if client ask to exit
             if (inputStringMessage.charAt(0) == '1') {
@@ -63,30 +62,32 @@ public class Server {
                 Saver.getHistory(pw2);
             }
         } else if (inputStringMessage.length() > 1) {
-                char code = inputStringMessage.charAt(0);
-                // если пришло обычное сообщение
-                if (code == '0') {
-                    String messageToSend = inputStringMessage.substring(1);
-                    Message currentMessage = new Message(client.getUsername(), messageToSend);
-                    Saver.saveMessage(currentMessage);
-                    sendToAll(currentMessage.toString());
-                } else if (code == '2') {//если настроить username
-                    String userNick = inputStringMessage.substring(1);
-                    changeUserName(client, userNick);
-
-                } else {
-                    // невалидный код
-                }
+            char code = inputStringMessage.charAt(0);
+            // если пришло обычное сообщение
+            if (code == '0') {
+                String messageToSend = inputStringMessage.substring(1);
+                Message currentMessage = new Message(client.getUsername(), messageToSend);
+                Saver.saveMessage(currentMessage);
+                sendToAll(currentMessage.toString(), client.getRoom());
+            } else if (code == '2') {//если настроить username
+                String userNick = inputStringMessage.substring(1);
+                changeUserName(client, userNick);
+            } else if (code == '4') {// если пришел номре команты
+                String nameRoom = inputStringMessage.substring(1);
+                client.setRoom(nameRoom);
+            } else {
+                // невалидный код
             }
         }
+    }
 
     private static void changeUserName(Client client, String userNick) throws IOException {
         // if this user name is already busy
         if (usedUserNames.contains(userNick)) {
             PrintWriter pw = new PrintWriter(client.getSocket().getOutputStream(), true);
-             pw.println("Имя пользователя " + userNick + " занято.Введите новое");
+            pw.println("Имя пользователя " + userNick + " занято.Введите новое");
         } else {
-            sendToAll("Пользователь "+ client.getUsername()+" переименован в "+ userNick);
+            sendToAll("Пользователь " + client.getUsername() + " переименован в " + userNick, client.getRoom());
             usedUserNames.remove(client.getUsername());
             client.setUsername(userNick);
             usedUserNames.add(userNick);
@@ -95,13 +96,15 @@ public class Server {
     }
 
 
-    private static void sendToAll(String currentMessage) throws IOException {
+    private static void sendToAll(String currentMessage, String room) throws IOException {
         HashSet<Client> clientsToDelete = new HashSet<>();
         for (Client current : clients) {
             Socket currentSocket = current.getSocket();
             if (!currentSocket.isClosed()) {
-                PrintWriter pw = new PrintWriter(currentSocket.getOutputStream(), true);
-                pw.println(currentMessage);
+                if (room.equals(current.getRoom())) {
+                    PrintWriter pw = new PrintWriter(currentSocket.getOutputStream(), true);
+                    pw.println(currentMessage);
+                }
             } else {
                 System.out.println("Сообщение " + currentMessage + " не было отправлено " + current.getUsername() + " . Этот клиент не в сетии ");
                 clientsToDelete.add(current);
@@ -111,7 +114,7 @@ public class Server {
         for (Client toDelete : clientsToDelete) {
             if (clients.contains(toDelete)) {
                 clients.remove(toDelete);
-                if(usedUserNames.contains(toDelete.getUsername())){
+                if (usedUserNames.contains(toDelete.getUsername())) {
                     usedUserNames.remove(toDelete.getUsername());
                 }
 
