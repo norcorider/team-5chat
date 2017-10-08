@@ -7,12 +7,12 @@ import java.util.Date;
 
 public class Message{
 
+
     private SimpleDateFormat dateMessage;
     private String userName;
     private String message;
     private Date now;
     private static int countAnon = 0;
-    private Date now;
     public Message(String userName, String message){
         now = new Date();
         this.userName = userName;
@@ -24,7 +24,7 @@ public class Message{
     public Message(String message){
         now = new Date();
         countAnon++;
-        this.userName = "anonymous" + countAnon;
+        this.userName = "Гость" + countAnon;
         this.message = message;
         now = new Date();
         dateMessage = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
