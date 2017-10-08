@@ -46,7 +46,7 @@ public class Message {
                 out.println("3");
                 return 1;
             case CHOOSE_ROOM:
-                out.println("4");
+                out.println("4" + getParameter(message));
                 return 1;
 
             default:
