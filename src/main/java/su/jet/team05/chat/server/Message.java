@@ -4,19 +4,22 @@ package su.jet.team05.chat.server;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Message implements Comparable<Message>{
+public class Message{ //} implements Comparable<Message>{
 
     private SimpleDateFormat dateMessage;
     private String userName;
     private String message;
+    private Date now;
     private static int countAnon = 0;
     public Message(String userName, String message){
+        now = new Date();
         this.userName = userName;
         this.message = message;
         dateMessage = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
 
     public Message(String message){
+        now = new Date();
         countAnon++;
         this.userName = "anonymous" + countAnon;
         this.message = message;
@@ -26,7 +29,7 @@ public class Message implements Comparable<Message>{
     @Override
     public String toString() {
             String result;
-            Date now = new Date();
+            //Date now = new Date();
             String strDate = dateMessage.format(now);
             result = strDate + " " + userName + ": " + message;
             return result;
