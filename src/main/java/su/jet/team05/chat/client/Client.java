@@ -76,9 +76,14 @@ public class Client {
         while (client == null || !client.isConnected()) {
             try {
                 client = new Socket(IP, PORT);
-                System.out.println("Успешное подключение к серверу!");
+                System.out.println("Connection to server successfull!");
+                System.out.println("Use commands:");
+                System.out.println("Send message: /snd");
+                System.out.println("View history: /hist");
+                System.out.println("Change User nick Name: /chid <NickName>");
+                System.out.println("Exit program: /exit");
             } catch (SocketException s) {
-                System.out.println("Нет соединения с сервером");
+                System.out.println("Server temporarily unavailable!");
             }
 
             try {
