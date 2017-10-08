@@ -53,6 +53,9 @@ public class Server {
             if (inputStringMessage.charAt(0) == '1') {
                 System.out.print("Client " + client.getSocket() + " will be deleted");
                 clients.remove(client);
+                if(userNames.containsKey(client.getUsername())){
+                    userNames.remove(client.getUsername());
+                }
                 // нужно как-то осободить ник клиента
                 //userNames.remove(client);
             }
@@ -101,6 +104,9 @@ public class Server {
         for (Client toDelete : clientsToDelete) {
             if (clients.contains(toDelete)) {
                 clients.remove(toDelete);
+                if(userNames.containsKey(toDelete.getUsername())){
+                    userNames.remove(toDelete.getUsername());
+                }
 
             }
         }
