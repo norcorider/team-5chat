@@ -3,8 +3,9 @@ package su.jet.team05.chat.client;
 import su.jet.team05.chat.exception.messageException;
 
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
-import java.util.Date;
+import java.net.SocketException;
 import java.util.Scanner;
 
 public class Client {
@@ -22,6 +23,9 @@ public class Client {
                     while (true) {
                         System.out.println(reader.readLine());
                     }
+                } catch (SocketException s) {
+                    System.out.println("Нет соединения с сервером");
+                    System.exit(-1);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -38,9 +42,10 @@ public class Client {
                 }
             } while (state != 0);
 
+        } catch (ConnectException c) {
+            System.out.println("Нет соединения с сервером");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
