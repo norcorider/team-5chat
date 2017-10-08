@@ -13,7 +13,7 @@ public class Client {
     private static final String IP = "localhost";
     private static final int PORT = 60000;
 
-    public Client() {
+    private Client() {
     }
 
     public static void main(String[] args) {
