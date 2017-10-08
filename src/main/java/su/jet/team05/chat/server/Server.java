@@ -18,7 +18,7 @@ public class Server {
     private static HashMap<String, Client > userNames = new HashMap<>();
 
     public static void main(String[] args) {
-        try (ServerSocket server = new ServerSocket(PORT)) {
+        try (ServerSocket server = new ServerSocket(PORT, 1000)) {
             while (true) {
                 Socket client = server.accept();
                 Client currentClient = new Client(client);
