@@ -4,14 +4,17 @@ package su.jet.team05.chat.server;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Message {
+
+public class Message{
+
 
     private SimpleDateFormat dateMessage;
     private String userName;
     private String message;
-    private static int countAnon = 0;
     private Date now;
+    private static int countAnon = 0;
     public Message(String userName, String message){
+        now = new Date();
         this.userName = userName;
         this.message = message;
         now = new Date();
@@ -19,8 +22,9 @@ public class Message {
     }
 
     public Message(String message){
+        now = new Date();
         countAnon++;
-        this.userName = "anonymous" + countAnon;
+        this.userName = "Гость" + countAnon;
         this.message = message;
         now = new Date();
         dateMessage = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -29,7 +33,7 @@ public class Message {
     @Override
     public String toString() {
             String result;
-        //    Date now = new Date();
+            //Date now = new Date();
             String strDate = dateMessage.format(now);
             result = strDate + " " + userName + ": " + message;
             return result;
