@@ -14,16 +14,16 @@ public class Message {
     private static final String GET_HISTORY_COMMAND = "/hist";
 
     public static int parseMessage(String message, PrintWriter out) throws messageException {
-        if (!isCommand(message)) throw new messageException("Message not a command");
+        if (!isCommand(message)) throw new messageException("Неправильный ввод");
         switch (getCommand(message)) {
             case SEND_COMMAND:
                 if (getParameter(message).length() > MAX_MESSAGE_LENGTH) {
-                    throw new messageException("Message is too large");
+                    throw new messageException("Длина сообщения превышена, максимум 150 символов");
                 } else {
                     if (message.length() > SEND_COMMAND.length() + 1) {
                         out.println("0" + message.substring(SEND_COMMAND.length() + 1));
                     } else {
-                        throw new messageException("Message is empty");
+                        throw new messageException("Пустое сообщение");
                     }
                 }
                 return 1;
@@ -32,12 +32,12 @@ public class Message {
                 return 0;
             case SET_NICK_COMMAND:
                 if (getParameter(message).length() > MAX_NICK_LENGTH) {
-                    throw new messageException("Nick is too large");
+                    throw new messageException("Длина имени пользователя превышена");
                 } else {
                     if (message.length() > SEND_COMMAND.length() + 1) {
                         out.println("2" + message.substring(SEND_COMMAND.length() + 1));
                     } else {
-                        throw new messageException("Nick is empty");
+                        throw new messageException("Имя пользователя не введено");
                     }
                 }
                 return 1;
@@ -46,7 +46,7 @@ public class Message {
                 return 1;
 
             default:
-                throw new messageException("Incorrect command");
+                throw new messageException("Неправильная команда");
         }
     }
 
