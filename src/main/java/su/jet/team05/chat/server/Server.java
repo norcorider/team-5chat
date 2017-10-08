@@ -59,7 +59,7 @@ public class Server {
                 // здесь будет выведена история
                 Socket currentSoket = client.getSocket();
                 PrintWriter pw2 = new PrintWriter(currentSoket.getOutputStream(), true);
-                Saver.getHistory(pw2);
+                pw2.println(Saver.getHistory());
             }
         } else if (inputStringMessage.length() > 1) {
             char code = inputStringMessage.charAt(0);
