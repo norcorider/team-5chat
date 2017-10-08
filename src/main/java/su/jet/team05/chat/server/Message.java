@@ -22,8 +22,9 @@ public class Message{ //implements Comparable<Message>{
         this.message = message;
         dateMessage = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
-    
-    public String getMessage() {
+
+    @Override
+    public String toString() {
             String result;
             Date now = new Date();
             String strDate = dateMessage.format(now);
