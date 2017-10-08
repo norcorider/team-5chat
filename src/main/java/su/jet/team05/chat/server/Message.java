@@ -32,7 +32,7 @@ public class Message implements Comparable<Message>{
             return result;
 
     }
-
+/*
    @Override
     public int compareTo(Message o) {
         int  b;
@@ -43,7 +43,7 @@ public class Message implements Comparable<Message>{
         else b = 0;
         return b;
 
-    }
+    }*/
 
 }
 
