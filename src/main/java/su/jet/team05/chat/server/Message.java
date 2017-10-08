@@ -22,15 +22,14 @@ public class Message{ //implements Comparable<Message>{
         this.message = message;
         dateMessage = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     }
-
-
-
+    
     public String getMessage() {
             String result;
             Date now = new Date();
             String strDate = dateMessage.format(now);
             result = strDate + " " + userName + ": " + message;
             return result;
+
     }
 
    /* @Override
