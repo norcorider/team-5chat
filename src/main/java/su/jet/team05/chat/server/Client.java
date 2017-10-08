@@ -14,7 +14,7 @@ public class Client {
 
     public Client(Socket socket) {
         this.socket = socket;
-        username ="default"+ counterId;
+        username ="default"+ String.valueOf(counterId);
         counterId++;
     }
 
