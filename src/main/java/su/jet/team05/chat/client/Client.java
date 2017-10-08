@@ -53,6 +53,7 @@ public class Client {
                 try {
                     System.out.println(reader.readLine());
                 } catch (IOException e) {
+                    System.out.println("Сервер временно недоступен!");
                     break;
                 }
             }
