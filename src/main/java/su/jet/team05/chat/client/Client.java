@@ -18,7 +18,7 @@ public class Client {
 
     public static void main(String[] args) {
         try {
-            ClientWork();
+            clientWork();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -26,7 +26,7 @@ public class Client {
 
     private static PrintWriter setClientWriter(Socket client) {
         try {
-            return (new PrintWriter(client.getOutputStream(), true));
+            return new PrintWriter(client.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -35,14 +35,14 @@ public class Client {
 
     private static BufferedReader setClientReader(Socket client) {
         try {
-            return (new BufferedReader(new InputStreamReader(client.getInputStream())));
+            return new BufferedReader(new InputStreamReader(client.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private static void ClientWork() throws IOException {
+    private static void clientWork() throws IOException {
         Socket client = null;
         client = clientRecconect(client);
 
