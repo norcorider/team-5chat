@@ -4,7 +4,7 @@ package su.jet.team05.chat.server;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Message{
+public class Message {
 
     private SimpleDateFormat dateMessage;
     private String userName;
