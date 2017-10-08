@@ -11,8 +11,9 @@ import java.util.*;
 public class Server {
     private static final int PORT = 60000;
 
+
     private static Set<Client> clients = new HashSet<>();
-    private static List<Message> history = new LinkedList<>();
+
     // key userName if it not Anonimus , value it's socket
     private static HashMap<String, Client > userNames = new HashMap<>();
 
@@ -62,9 +63,7 @@ public class Server {
                 // здесь будет выведена история
                 Socket currentSoket = client.getSocket();
                 PrintWriter pw2 = new PrintWriter(currentSoket.getOutputStream(), true);
-                for (Message oldMessage : history) {
-                    pw2.println(oldMessage);
-                }
+                Saver.getHistory(pw2);
             }
         }
             else if (inputStringMessage.length() > 1) {
@@ -74,7 +73,7 @@ public class Server {
 
                     String messageToSend = inputStringMessage.substring(1);
                     Message currentMessage = new Message(client.getUsername(), messageToSend);
-                    history.add(currentMessage);
+                    Saver.saveMessage(currentMessage);
                     sendToAll(currentMessage.toString());
                 } else if (code == '2') {//если настроить username
                     String userNick = inputStringMessage.substring(1);

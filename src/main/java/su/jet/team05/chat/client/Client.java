@@ -55,7 +55,7 @@ public class Client {
                 try {
                     System.out.println(reader.readLine());
                 } catch (IOException e) {
-                    System.out.println("Server temporarily unavailable!");
+                    System.out.println("Сервер временно недоступен!");
                     break;
                 }
             }
@@ -78,14 +78,14 @@ public class Client {
         while (client == null || !client.isConnected()) {
             try {
                 client = new Socket(IP, PORT);
-                System.out.println("Connection to server successfull!");
-                System.out.println("Use commands:");
-                System.out.println("Send message: /snd");
-                System.out.println("View history: /hist");
-                System.out.println("Change User nick Name: /chid <NickName>");
-                System.out.println("Exit program: /exit");
+                System.out.println("Соедимение с сервером успешно!");
+                System.out.println("Возможные команды:");
+                System.out.println("Отправить сообщение: /snd");
+                System.out.println("Вывести историю: /hist");
+                System.out.println("Изменить имя пользователя: /chid <NickName>");
+                System.out.println("Выход из программы: /exit");
             } catch (SocketException s) {
-                System.out.println("Server temporarily unavailable!");
+                System.out.println("Сервер временно недоступен!");
             }
 
             try {
