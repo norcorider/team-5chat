@@ -12,6 +12,7 @@ public class Message {
     private static final String EXIT_COMMAND = "/exit";
     private static final String SET_NICK_COMMAND = "/chid";
     private static final String GET_HISTORY_COMMAND = "/hist";
+    private static final String CHOOSE_ROOM = "/chroom";
 
     public static int parseMessage(String message, PrintWriter out) throws messageException {
         if (!isCommand(message)) throw new messageException("Неправильный ввод");
@@ -20,8 +21,8 @@ public class Message {
                 if (getParameter(message).length() > MAX_MESSAGE_LENGTH) {
                     throw new messageException("Длина сообщения превышена, максимум 150 символов");
                 } else {
-                    if (message.length() > SEND_COMMAND.length() + 1) {
-                        out.println("0" + message.substring(SEND_COMMAND.length() + 1));
+                    if (!getParameter(message).equals("")) {
+                        out.println("0" + getParameter(message));
                     } else {
                         throw new messageException("Пустое сообщение");
                     }
@@ -34,8 +35,8 @@ public class Message {
                 if (getParameter(message).length() > MAX_NICK_LENGTH) {
                     throw new messageException("Длина имени пользователя превышена");
                 } else {
-                    if (message.length() > SEND_COMMAND.length() + 1) {
-                        out.println("2" + message.substring(SEND_COMMAND.length() + 1));
+                    if (!getParameter(message).equals("")) {
+                        out.println("2" + getParameter(message));
                     } else {
                         throw new messageException("Имя пользователя не введено");
                     }
@@ -44,6 +45,9 @@ public class Message {
             case GET_HISTORY_COMMAND:
                 out.println("3");
                 return 1;
+            case CHOOSE_ROOM:
+                out.println("4");
+                return 1;
 
             default:
                 throw new messageException("Неправильная команда");
@@ -51,7 +55,7 @@ public class Message {
     }
 
     private static String getParameter(String message) {
-        return message.indexOf(' ') == -1 ? "" : message.substring(message.indexOf(' '));
+        return message.indexOf(' ') == -1 ? "" : message.substring(message.indexOf(' ') + 1);
     }
 
     private static boolean isCommand(String message) {

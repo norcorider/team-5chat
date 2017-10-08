@@ -82,7 +82,7 @@ public class Client {
                 System.out.println("Возможные команды:");
                 System.out.println("Отправить сообщение: /snd");
                 System.out.println("Вывести историю: /hist");
-                System.out.println("Изменить имя пользователя: /chid <NickName>");
+                System.out.println("Изменить имя пользователя: /chid <Имя пользователя>");
                 System.out.println("Выход из программы: /exit");
             } catch (SocketException s) {
                 System.out.println("Сервер временно недоступен!");
