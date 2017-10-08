@@ -1,5 +1,7 @@
 package su.jet.team05.chat.server;
 
+
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,18 +11,18 @@ import java.util.*;
 public class Server {
     private static final int PORT = 60000;
 
-    private static Set<Socket> clients = new HashSet<>();
+    private static Set<Client> clients = new HashSet<>();
     private static List<Message> history = new LinkedList<>();
     // key userName if it not Anonimus , value it's socket
-    private static HashMap<String, Socket> userNames = new HashMap<>();
+    private static HashMap<String, Client > userNames = new HashMap<>();
 
     public static void main(String[] args) {
         try (ServerSocket server = new ServerSocket(PORT)) {
             while (true) {
                 Socket client = server.accept();
-
-                clients.add(client);
-                new Thread(() -> clientLoop(client)).start();
+                Client currentClient = new Client(client);
+                clients.add(currentClient);
+                new Thread(() -> clientLoop(currentClient)).start();
 
             }
         } catch (IOException e) {
@@ -28,8 +30,8 @@ public class Server {
         }
     }
 
-    private static void clientLoop(Socket client) {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()))) {
+    private static void clientLoop(Client client) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(client.getSocket().getInputStream()))) {
 
             String inputStringMessage;
             do {
@@ -46,10 +48,10 @@ public class Server {
         }
     }
 
-    private static void parseAndSend(Socket client, String inputStringMessage) throws IOException {
+    private static void parseAndSend(Client client, String inputStringMessage) throws IOException {
         if (inputStringMessage.length() < 2 && inputStringMessage.length() > 0) {
             if (inputStringMessage.charAt(0) == '1') {
-                System.out.print("Client " + client + " will be deleted");
+                System.out.print("Client " + client.getSocket() + " will be deleted");
                 clients.remove(client);
                 // нужно как-то осободить ник клиента
                 //userNames.remove(client);
@@ -58,19 +60,23 @@ public class Server {
             char code = inputStringMessage.charAt(0);
             // если пришло обычное сообщение
             if (code == '0') {
+
                 String messageToSend = inputStringMessage.substring(1);
-                sendToAll(messageToSend);
+                Message currentMessage = new Message( client.getUsername(),messageToSend);
+                sendToAll(currentMessage.toString());
             } else if (code == '2') {//если настроить username
                 String userNick = inputStringMessage.substring(1);
                 // if this user name is stored
                 if (userNames.containsKey(userNick)) {
                     // if it's not the same socket, send to this client that username is invalid
                     if (!(userNames.get(userNick) == client)) {
-                        PrintWriter pw = new PrintWriter(client.getOutputStream(), true);
+                        PrintWriter pw = new PrintWriter(client.getSocket().getOutputStream(), true);
                         pw.println("The user name " + userNick + " is busy. Enter other username");
                     }
                 } else {
+                    client.setUsername(userNick);
                     userNames.put(userNick, client);
+
                 }
             } else if (code == '3') {
                 // здесь будет выведена история
@@ -81,19 +87,21 @@ public class Server {
     }
 
     private static void sendToAll(String currentMessage) throws IOException {
-        HashSet<Socket> clientsToDelete = new HashSet<>();
-        for (Socket current : clients) {
-            if (!current.isClosed()) {
-                PrintWriter pw = new PrintWriter(current.getOutputStream(), true);
+        HashSet<Client> clientsToDelete = new HashSet<>();
+        for (Client current : clients) {
+            Socket currentSocket = current.getSocket();
+            if (!currentSocket.isClosed()) {
+                PrintWriter pw = new PrintWriter(currentSocket.getOutputStream(), true);
                 pw.println(currentMessage);
             } else {
                 System.out.println("Message " + currentMessage + " wasn't sent to " + current + " . This client will be deleted ");
                 clientsToDelete.add(current);
             }
         }
-        for (Socket toDelete : clientsToDelete) {
+        for (Client toDelete : clientsToDelete) {
             if (clients.contains(toDelete)) {
                 clients.remove(toDelete);
+
             }
         }
     }

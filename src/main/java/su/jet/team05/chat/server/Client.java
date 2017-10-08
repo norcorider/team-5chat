@@ -5,6 +5,7 @@ import java.net.Socket;
 public class Client {
     Socket socket;
     String username;
+    private static int counterId =0;
 
     public Client(Socket socket, String username) {
         this.socket = socket;
@@ -13,6 +14,8 @@ public class Client {
 
     public Client(Socket socket) {
         this.socket = socket;
+        username ="default"+ counterId;
+        counterId++;
     }
 
     public Socket getSocket() {
