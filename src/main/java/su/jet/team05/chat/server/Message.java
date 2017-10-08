@@ -20,7 +20,7 @@ public class Message {
     public String getMessage() {
         String strDate = DateFormat.getDateInstance(DateFormat.SHORT).format(dateMessage);
 
-        return
+        return "";
     }
 
 }
