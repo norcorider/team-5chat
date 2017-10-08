@@ -52,7 +52,7 @@ public class Server {
     private static void parseAndSend(Client client, String inputStringMessage) throws IOException {
         if (inputStringMessage.length() < 2 && inputStringMessage.length() > 0) {
             if (inputStringMessage.charAt(0) == '1') {
-                System.out.print("Client " + client.getSocket() + " will be deleted");
+                System.out.print("Клиент " + client.getSocket() + " будет удален");
                 clients.remove(client);
                 if (userNames.containsKey(client.getUsername())) {
                     userNames.remove(client.getUsername());
@@ -82,7 +82,7 @@ public class Server {
                         // if it's not the same socket, send to this client that username is invalid
                         if (!(userNames.get(userNick) == client)) {
                             PrintWriter pw = new PrintWriter(client.getSocket().getOutputStream(), true);
-                            pw.println("The user name " + userNick + " is busy. Enter other username");
+                            pw.println("Имя пользователя " + userNick + " уже занято, введите другое имя");
                         }
                     } else {
                         client.setUsername(userNick);
@@ -104,7 +104,7 @@ public class Server {
                 PrintWriter pw = new PrintWriter(currentSocket.getOutputStream(), true);
                 pw.println(currentMessage);
             } else {
-                System.out.println("Message " + currentMessage + " wasn't sent to " + current + " . This client will be deleted ");
+                System.out.println("Сообщение " + currentMessage + " не было отправлено " + current + " . Этот клиент не в сети ");
                 clientsToDelete.add(current);
             }
         }
